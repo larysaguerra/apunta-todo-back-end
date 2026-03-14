@@ -1,31 +1,31 @@
 package dominio;
 
 public class Producto {
+
     // Atributos:
     private int id;
     private String nombre;
     private String unidadMedida;
-    private CategoriaProducto categoria;
+    private int categoriaId;
 
     //constructores
-    public Producto(){
+    public Producto() {
     }
-    public Producto(int id,String nombre, String unidadMedida,CategoriaProducto categoria){
-        this.id=id;
-        this.nombre=nombre;
-        this.unidadMedida=unidadMedida;
-        this.categoria=categoria;
+
+    public Producto(int id, String nombre, String unidadMedida, int categoriaId) {
+        this.id = id;
+        this.nombre = nombre;
+        this.unidadMedida = unidadMedida;
+        this.categoriaId = categoriaId;
     }
 
     //Getters Setters
-
-
-    public CategoriaProducto getCategoria() {
-        return categoria;
+    public int getCategoriaId() {
+        return this.categoriaId;
     }
 
-    public void setCategoria(CategoriaProducto categoria) {
-        this.categoria = categoria;
+    public void setCategoriaId(int categoriaId) {
+        this.categoriaId = categoriaId;
     }
 
     public String getUnidadMedida() {
@@ -51,18 +51,23 @@ public class Producto {
     public void setId(int id) {
         this.id = id;
     }
-    //metodos de la clase
-    public Producto crearProducto(int id,String nombre,String unidadMedida,CategoriaProducto categoria){return new Producto(id,nombre,unidadMedida,categoria);}
-    public void mostrarProducto(){
+
+    // Metodos de la clase
+
+    public Producto crearProducto(int id, String nombre, String unidadMedida, int categoriaId) {
+        Producto producto = new Producto();
+        producto.setId(id);
+        producto.setNombre(nombre);
+        producto.setUnidadMedida(unidadMedida);
+        producto.setCategoriaId(categoriaId);
+        return producto;
+    }
+
+    public void mostrarProducto() {
         System.out.println("ID: " + id);
         System.out.println("Nombre: " + nombre);
         System.out.println("UnidadMedidad: " + unidadMedida);
-        System.out.println("Categoria: " + categoria);
-
-
+        System.out.println("Categoria: " + categoriaId);
     }
 
-
 }
-
-
