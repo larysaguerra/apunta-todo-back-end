@@ -6,6 +6,8 @@ public class CategoriaProducto {
     private String nombre;
     private String descripcion;
 
+    // Constructores
+
     public CategoriaProducto() {
     }
 
@@ -14,6 +16,8 @@ public class CategoriaProducto {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }
+
+    // Getters and setters
 
     public int getId() {
         return id;
@@ -37,6 +41,16 @@ public class CategoriaProducto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    // Metodos de la clase
+
+    public CategoriaProducto crearCategoria(int id, String nombre, String descripcion){
+        CategoriaProducto categoria = new CategoriaProducto();
+        categoria.setId(id);
+        categoria.setNombre(nombre);
+        categoria.setDescripcion(descripcion);
+        return categoria;
     }
 
     public void mostrarCategoria() {

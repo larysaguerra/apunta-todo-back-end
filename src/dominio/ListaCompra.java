@@ -3,34 +3,32 @@ package dominio;
 
 public class ListaCompra {
 
-//Atributos
+    //Atributos
     private int id;
     private String nombre;
-    private  String fecha;
-    private Usuario usuario;
+    private String fecha;
+    private int usuarioId;
 
 
-//Constructores
-
+    //Constructores
     public ListaCompra() {
 
     }
-    public ListaCompra(int id, String nombre, String fecha, Usuario usuario ){
-        this.id= id;
-        this.nombre= nombre;
-        this.fecha= fecha;
-        this.usuario= usuario;
+
+    public ListaCompra(int id, String nombre, String fecha, int usuarioId) {
+        this.id = id;
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.usuarioId = usuarioId;
     }
 
-    //Guetters Setters
-
-
-    public Usuario getUsuario() {
-        return usuario;
+    //Getters y Setters
+    public int getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(int usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public String getFecha() {
@@ -57,13 +55,21 @@ public class ListaCompra {
         this.id = id;
     }
 
-    // metodos
-    public void mostrarListaCompra(){
-        System.out.println("ID: "+id);
-        System.out.println("NOMBRE: "+nombre);
-        System.out.println("FECHA: "+fecha);
-        System.out.println("USUARIO: "+usuario);
+    // metodos de la clase
+    public ListaCompra crearListaDeCompra(int id, String nombre, String fecha, int usuarioId){
+        ListaCompra listaCompra = new ListaCompra();
+        listaCompra.setId(id);
+        listaCompra.setNombre(nombre);
+        listaCompra.setFecha(fecha);
+        listaCompra.setUsuario(usuarioId);
+        return listaCompra;
+    }
 
+    public void mostrarListaCompra() {
+        System.out.println("ID: " + id);
+        System.out.println("NOMBRE: " + nombre);
+        System.out.println("FECHA: " + fecha);
+        System.out.println("USUARIO: " + usuarioId);
     }
 
 }

@@ -3,18 +3,18 @@ package dominio;
 public class DetalleLista {
 
     private int id;
-    private Producto producto;
+    private int productoId;
     private int cantidad;
-    private ListaCompra lista;
+    private int listaId;
 
     public DetalleLista() {
     }
 
-    public DetalleLista(int id, Producto producto, int cantidad, ListaCompra lista) {
+    public DetalleLista(int id, int productoId, int cantidad, int listaId) {
         this.id = id;
-        this.producto = producto;
+        this.productoId = productoId;
         this.cantidad = cantidad;
-        this.lista = lista;
+        this.listaId = listaId;
     }
 
     public int getId() {
@@ -25,12 +25,12 @@ public class DetalleLista {
         this.id = id;
     }
 
-    public Producto getProducto() {
-        return producto;
+    public int getProductoId() {
+        return productoId;
     }
 
-    public void setProducto(Producto producto) {
-        this.producto = producto;
+    public void setProductoId(int productoId) {
+        this.productoId = productoId;
     }
 
     public int getCantidad() {
@@ -41,20 +41,28 @@ public class DetalleLista {
         this.cantidad = cantidad;
     }
 
-    public ListaCompra getLista() {
-        return lista;
+    public int getListaId() {
+        return this.listaId;
     }
 
-    public void setLista(ListaCompra lista) {
-        this.lista = lista;
+    public void setListaId(int lista) {
+        this.listaId = listaId;
     }
-    public DetalleLista crearDetallelista(int id,Producto producto,int cantidad,ListaCompra lista){return new DetalleLista(id,producto,cantidad,lista);}
+
+    public DetalleLista crearDetallelista(int id, int productoId, int cantidad, int listaId) {
+        DetalleLista detalleLista = new DetalleLista();
+        detalleLista.setId(id);
+        detalleLista.setProductoId(productoId);
+        detalleLista.setCantidad(cantidad);
+        detalleLista.setListaId(listaId);
+        return detalleLista;
+    }
 
     public void mostrarDetalleLista() {
-
-        System.out.println("ID: "+ id);
-        System.out.println("Producto: " + producto);
+        System.out.println("ID: " + id);
+        System.out.println("Producto: " + productoId);
         System.out.println("Cantidad: " + cantidad);
-        System.out.println("Lista: " + lista);
+        System.out.println("Lista: " + listaId);
     }
+
 }

@@ -3,43 +3,45 @@ package dominio;
 public class Usuario {
 
     //Atributos
+
     private int id;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
-    private String contraseña;
-    private Rol rol;
+    private String contrasena;
+    private int rolId;
 
-    //constructores
-public Usuario(){
-}
-public Usuario(int id,String nombre, String apellido,String correo,String telefono,String contraseña, Rol rol ){
-    this.id = id;
-    this.nombre = nombre;
-    this.correo = correo;
-    this.telefono = telefono;
-    this.contraseña = contraseña;
-    this.rol = rol;
-}
+    // Constructores
 
-//getters setters
-
-
-    public Rol getRol() {
-        return rol;
+    public Usuario() {
     }
 
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public Usuario(int id, String nombre, String apellido, String correo, String telefono, String contrasena, int rolId) {
+        this.id = id;
+        this.nombre = nombre;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.contrasena = contrasena;
+        this.rolId = rolId;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    // Getters y setters
+
+    public int getRolId() {
+        return rolId;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setRol(int rol) {
+        this.rolId = rolId;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
     }
 
     public String getTelefono() {
@@ -82,13 +84,28 @@ public Usuario(int id,String nombre, String apellido,String correo,String telefo
         this.id = id;
     }
 
-    public void mostrarUsuario(){
-        System.out.println("ID: "+ id);
-        System.out.println("NOMBRE: "+ nombre);
-        System.out.println("APELLIDO: "+ apellido);
-        System.out.println("CORREO: "+ correo);
-        System.out.println("TELEFONO: "+ telefono);
-        System.out.println("CONTRASEÑA: "+ contraseña);
-        System.out.println("ROL: "+ rol);
+    // Metodos de la clase
+
+    public Usuario crearUsuario(int id, String nombre, String apellido, String correo, String telefono, String contrasena, int rolId) {
+        Usuario usuario = new Usuario();
+        usuario.setId(id);
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setCorreo(correo);
+        usuario.setTelefono(telefono);
+        usuario.setContrasena(contrasena);
+        usuario.setRol(rolId);
+        return usuario;
     }
+
+    public void mostrarUsuario() {
+        System.out.println("ID: " + id);
+        System.out.println("NOMBRE: " + nombre);
+        System.out.println("APELLIDO: " + apellido);
+        System.out.println("CORREO: " + correo);
+        System.out.println("TELEFONO: " + telefono);
+        System.out.println("CONTRASEÑA: " + contrasena);
+        System.out.println("ROL: " + rolId);
+    }
+
 }
