@@ -1,7 +1,8 @@
 package application.service;
 
-import dominio.Producto;
-import application.ports.ProductoRepositorioPort;
+import application.domain.Producto;
+import application.service.outputs.ProductoServicio;
+import application.service.ports.ProductoRepositorioPort;
 
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public List<Producto> listar() {
-        return repositorio.listar();
+    public List<Producto> obtenerTodos() {
+        return repositorio.obtenerTodos();
     }
 
     @Override
