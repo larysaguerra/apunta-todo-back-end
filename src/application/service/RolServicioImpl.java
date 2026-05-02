@@ -1,7 +1,8 @@
 package application.service;
 
-import dominio.Rol;
-import application.ports.RolRepositorioPort;
+import application.domain.Rol;
+import application.service.outputs.RolServicio;
+import application.service.ports.RolRepositorioPort;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class RolServicioImpl implements RolServicio {
     }
 
     @Override
-    public List<Rol> listar() {
-        return repositorio.listar();
+    public List<Rol> obtenerTodos() {
+        return repositorio.obtenerTodos();
     }
 
     @Override
