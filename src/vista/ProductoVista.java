@@ -37,12 +37,30 @@ public class ProductoVista {
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
 
-                    Producto producto = new Producto().crearProducto(id, nombre, "Unidad", 1);
+                    System.out.print("Unidad de medida: ");
+                    String unidad = sc.nextLine();
+
+                    System.out.println("Seleccione categoria:");
+                    System.out.println("1. Lacteos");
+                    System.out.println("2. Carnes");
+                    System.out.println("3. Aseo");
+                    System.out.println("4. Bebidas");
+
+                    System.out.print("Categoria ID: ");
+                    int categoriaId = sc.nextInt();
+                    sc.nextLine();
+
+                    Producto producto = new Producto().crearProducto(
+                            id,
+                            nombre,
+                            unidad,
+                            categoriaId
+                    );
+
                     servicio.crear(producto);
 
-                    System.out.println("✅ Producto guardado");
+                    System.out.println("✅ Producto guardado correctamente");
                     break;
-
                 case 2:
                     System.out.println("\n📋 Lista:");
 
@@ -50,7 +68,13 @@ public class ProductoVista {
                         System.out.println("⚠ No hay productos");
                     } else {
                         servicio.listar().forEach(p ->
-                                System.out.println(p.getId() + " - " + p.getNombre()));
+                                System.out.println(
+                                        "ID: " + p.getId() +
+                                                " | Nombre: " + p.getNombre() +
+                                                " | Unidad: " + p.getUnidadMedida() +
+                                                " | Categoria: " + p.getCategoriaId()
+                                )
+                        );
                     }
                     break;
 
