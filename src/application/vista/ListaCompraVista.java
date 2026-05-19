@@ -1,0 +1,104 @@
+package application.vista;
+
+import application.service.outputs.ListaCompraServicio;
+import application.domain.ListaCompra;
+
+import java.util.Scanner;
+
+public class ListaCompraVista {
+
+    private final ListaCompraServicio servicio;
+    private final Scanner sc = new Scanner(System.in);
+
+    public ListaCompraVista(ListaCompraServicio listaCompraServicio) {
+        this.servicio = listaCompraServicio;
+    }
+
+    public void menu() {
+        int op;
+
+        do {
+            System.out.println("\n=== LISTAS DE COMPRA ===");
+            System.out.println("1. Crear lista");
+            System.out.println("2. Leer lista por ID");
+            System.out.println("3. Listar listas");
+            System.out.println("4. Actualizar lista");
+            System.out.println("5. Eliminar lista");
+            System.out.println("0. Volver");
+
+            op = sc.nextInt();
+            sc.nextLine();
+
+            switch (op) {
+                case 1:
+                    System.out.print("ID: ");
+                    int id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Nombre: ");
+                    String nombre = sc.nextLine();
+                    System.out.print("Fecha: ");
+                    String fecha = sc.nextLine();
+                    System.out.print("ID usuario: ");
+                    int usuarioId = sc.nextInt();
+
+                    servicio.crear(new ListaCompra(id, nombre, fecha, usuarioId));
+                    System.out.println("✅ Lista creada");
+                    break;
+
+                case 2:
+                    System.out.print("ID: ");
+                    int idBuscar = sc.nextInt();
+                    ListaCompra lista = servicio.leerPorId(idBuscar);
+                    if (lista == null) {
+                        System.out.println("⚠ No existe lista con ese ID");
+                    } else {
+                        System.out.println(lista.getId() + " - " + lista.getNombre() + " - " + lista.getFecha()
+                                + " - Usuario: " + lista.getUsuarioId());
+                    }
+                    break;
+
+                case 3:
+                    if (servicio.obtenerTodos().isEmpty()) {
+                        System.out.println("⚠ No hay listas registradas");
+                    } else {
+                        servicio.obtenerTodos().forEach(l -> System.out.println(l.getId() + " - " + l.getNombre()
+                                + " - " + l.getFecha() + " - Usuario: " + l.getUsuarioId()));
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("ID a actualizar: ");
+                    int idActualizar = sc.nextInt();
+                    sc.nextLine();
+                    if (servicio.leerPorId(idActualizar) == null) {
+                        System.out.println("⚠ No existe lista con ese ID");
+                        break;
+                    }
+                    System.out.print("Nuevo nombre: ");
+                    String nuevoNombre = sc.nextLine();
+                    System.out.print("Nueva fecha: ");
+                    String nuevaFecha = sc.nextLine();
+                    System.out.print("Nuevo ID usuario: ");
+                    int nuevoUsuarioId = sc.nextInt();
+
+                    servicio.actualizar(new ListaCompra(idActualizar, nuevoNombre, nuevaFecha, nuevoUsuarioId));
+                    System.out.println("✅ Lista actualizada");
+                    break;
+
+                case 5:
+                    System.out.print("ID a eliminar: ");
+                    int idEliminar = sc.nextInt();
+                    servicio.eliminar(idEliminar);
+                    System.out.println("🗑 Lista eliminada");
+                    break;
+
+                case 0:
+                    System.out.println("🔙 Volviendo...");
+                    break;
+
+                default:
+                    System.out.println("❌ Opción inválida");
+            }
+        } while (op != 0);
+    }
+}
