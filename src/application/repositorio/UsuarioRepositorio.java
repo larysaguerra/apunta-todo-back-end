@@ -1,6 +1,7 @@
 package application.repositorio;
 
 import application.service.ports.UsuarioRepositorioPort;
+import application.domain.Rol;
 import application.domain.Usuario;
 
 import java.util.ArrayList;
@@ -9,10 +10,13 @@ import java.util.List;
 
 public class UsuarioRepositorio implements UsuarioRepositorioPort {
 
+    private final Rol rolAdmin = new Rol(1, "Administrador", "Rol con todos los permisos");
+    private final Rol rolUsuario = new Rol(2, "Usuario", "Rol con permisos para listas");
+
     private final List<Usuario> lista = new ArrayList<>(
             Arrays.asList(
-                    new Usuario(1, "Yetty", "Sanz", "yetty@email.com", "300123456", "1234", 1),
-                    new Usuario(2, "Larysa", "Guerra", "larysa@email.com", "333123456", "1234", 2)
+                    new Usuario(1, "Yetty", "Sanz", "yetty@email.com", "1234", "300123456", rolAdmin),
+                    new Usuario(2, "Larysa", "Guerra", "larysa@email.com", "1234", "333123456", rolUsuario)
             )
     );
 
@@ -50,5 +54,4 @@ public class UsuarioRepositorio implements UsuarioRepositorioPort {
     public void eliminar(int id) {
         lista.removeIf(usuario -> usuario.getId() == id);
     }
-
 }

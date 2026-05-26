@@ -17,7 +17,7 @@ public class Config {
 
         UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
         UsuarioServicioImpl usuarioServicioImpl = new UsuarioServicioImpl(usuarioRepositorio);
-        UsuarioVista usuarioVista = new UsuarioVista(usuarioServicioImpl);
+        UsuarioVista usuarioVista = new UsuarioVista(usuarioServicioImpl, rolServicioImpl);
 
         CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
         CategoriaServicioImpl categoriaServicioImpl = new CategoriaServicioImpl(categoriaRepositorio);
