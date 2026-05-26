@@ -6,6 +6,7 @@ import java.util.List;
 public interface RolServicio {
 
     void crear(Rol rol);
+    Rol buscarPorId(int id);
     List<Rol> obtenerTodos();
     void eliminar(int id);
 }

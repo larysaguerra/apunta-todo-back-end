@@ -20,6 +20,11 @@ public class RolServicioImpl implements RolServicio {
     }
 
     @Override
+    public Rol buscarPorId(int id) {
+        return repositorio.buscarPorId(id);
+    }
+
+    @Override
     public List<Rol> obtenerTodos() {
         return repositorio.obtenerTodos();
     }

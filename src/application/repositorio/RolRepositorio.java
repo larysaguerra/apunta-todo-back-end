@@ -22,6 +22,16 @@ public class RolRepositorio implements RolRepositorioPort {
     }
 
     @Override
+    public Rol buscarPorId(int id) {
+        for (Rol rol : lista) {
+            if (rol.getId() == id) {
+                return rol;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Rol> obtenerTodos() {
         return lista;
     }
