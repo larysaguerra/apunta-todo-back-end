@@ -4,7 +4,9 @@ import application.service.outputs.ListaCompraServicio;
 import application.service.ports.ListaCompraRepositorioPort;
 import application.domain.ListaCompra;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListaCompraServicioImpl implements ListaCompraServicio {
 
@@ -26,7 +28,9 @@ public class ListaCompraServicioImpl implements ListaCompraServicio {
 
     @Override
     public List<ListaCompra> obtenerTodos() {
-        return repositorio.obtenerTodos();
+        return repositorio.obtenerTodos().stream()
+                .sorted(Comparator.comparing(ListaCompra::getEstado))
+                .collect(Collectors.toList());
     }
 
     @Override

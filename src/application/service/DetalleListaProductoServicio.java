@@ -22,14 +22,16 @@ public class DetalleListaProductoServicio {
     }
 
     public String describirDetalle(DetalleLista detalle) {
-        return "Detalle #" + detalle.getId() + " | Producto: "
-                + obtenerNombreProductoPorId(detalle.getProductoId())
+        String check = detalle.isComprado() ? "[✓]" : "[ ]";
+        return check + " Detalle #" + detalle.getId()
+                + " | Producto: " + obtenerNombreProductoPorId(detalle.getProductoId())
                 + " | Cantidad: " + detalle.getCantidad();
     }
 
     public String describirDetalleConLista(DetalleLista detalle) {
-        return detalle.getId() + " - Producto: "
-                + obtenerNombreProductoPorId(detalle.getProductoId())
+        String check = detalle.isComprado() ? "[✓]" : "[ ]";
+        return check + " " + detalle.getId()
+                + " - Producto: " + obtenerNombreProductoPorId(detalle.getProductoId())
                 + ", Cantidad: " + detalle.getCantidad()
                 + ", Lista: " + detalle.getListaId();
     }

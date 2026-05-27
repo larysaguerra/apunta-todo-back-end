@@ -1,49 +1,24 @@
 package application.domain;
 
+import application.domain.enums.EstadoLista;
 
 public class ListaCompra {
 
-    //Atributos
     private int id;
     private String nombre;
     private String fecha;
     private int usuarioId;
+    private EstadoLista estado;
 
-    //Constructores
     public ListaCompra() {
-
     }
 
-    public ListaCompra(int id, String nombre, String fecha, int usuarioId) {
+    public ListaCompra(int id, String nombre, String fecha, int usuarioId, EstadoLista estado) {
         this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
         this.usuarioId = usuarioId;
-    }
-
-    //Getters y Setters
-    public int getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuario(int usuarioId) {
-        this.usuarioId = usuarioId;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.estado = estado;
     }
 
     public int getId() {
@@ -54,4 +29,40 @@ public class ListaCompra {
         this.id = id;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(int usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public EstadoLista getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoLista estado) {
+        this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nombre + " - " + fecha + " - Estado: " + estado;
+    }
 }
