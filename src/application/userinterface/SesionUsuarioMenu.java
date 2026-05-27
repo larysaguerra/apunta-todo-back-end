@@ -103,7 +103,7 @@ public class SesionUsuarioMenu {
         System.out.print("Nueva fecha (yyyy-mm-dd): ");
         String nuevaFecha = sc.nextLine();
 
-        ListaCompra actualizada = new ListaCompra(lista.getId(), nuevoNombre, nuevaFecha, usuarioId);
+        ListaCompra actualizada = new ListaCompra(lista.getId(), nuevoNombre, nuevaFecha, usuarioId, lista.getEstado());
         listaCompraServicio.actualizar(actualizada);
         System.out.println("Lista actualizada con exito.");
     }
@@ -151,7 +151,7 @@ public class SesionUsuarioMenu {
         int nuevaCantidad = sc.nextInt();
         sc.nextLine();
 
-        DetalleLista actualizado = new DetalleLista(detalle.getId(), nuevoProductoId, nuevaCantidad, listaId);
+        DetalleLista actualizado = new DetalleLista(detalle.getId(), nuevoProductoId, nuevaCantidad, listaId, detalle.isComprado());
         detalleListaServicio.actualizar(actualizado);
         System.out.println("Detalle actualizado con exito.");
     }

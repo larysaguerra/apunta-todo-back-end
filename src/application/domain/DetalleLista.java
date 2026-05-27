@@ -6,15 +6,27 @@ public class DetalleLista {
     private int productoId;
     private int cantidad;
     private int listaId;
+    private boolean comprado;
 
     public DetalleLista() {
     }
 
+    // Constructor sin comprado: por defecto el ítem no está comprado
     public DetalleLista(int id, int productoId, int cantidad, int listaId) {
         this.id = id;
         this.productoId = productoId;
         this.cantidad = cantidad;
         this.listaId = listaId;
+        this.comprado = false;
+    }
+
+    // Constructor completo: permite indicar el estado explícitamente
+    public DetalleLista(int id, int productoId, int cantidad, int listaId, boolean comprado) {
+        this.id = id;
+        this.productoId = productoId;
+        this.cantidad = cantidad;
+        this.listaId = listaId;
+        this.comprado = comprado;
     }
 
     public int getId() {
@@ -42,11 +54,18 @@ public class DetalleLista {
     }
 
     public int getListaId() {
-        return this.listaId;
+        return listaId;
     }
 
-    public void setListaId(int lista) {
-        this.listaId = lista;
+    public void setListaId(int listaId) {
+        this.listaId = listaId;
     }
 
+    public boolean isComprado() {
+        return comprado;
+    }
+
+    public void setComprado(boolean comprado) {
+        this.comprado = comprado;
+    }
 }

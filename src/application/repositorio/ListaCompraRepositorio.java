@@ -2,6 +2,7 @@ package application.repositorio;
 
 import application.service.ports.ListaCompraRepositorioPort;
 import application.domain.ListaCompra;
+import application.domain.enums.EstadoLista;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +12,9 @@ public class ListaCompraRepositorio implements ListaCompraRepositorioPort {
 
     private final List<ListaCompra> lista = new ArrayList<>(
             Arrays.asList(
-                    new ListaCompra(1, "Mercado semanal", "2026-02-11", 2),
-                    new ListaCompra(2, "Fruver", "2026-03-02", 2),
-                    new ListaCompra(3, "Aseo", "2026-04-15", 2)
+                    new ListaCompra(1, "Mercado semanal", "2026-02-11", 2, EstadoLista.FAVORITA),
+                    new ListaCompra(2, "Fruver", "2026-03-02", 2, EstadoLista.CERRADA),
+                    new ListaCompra(3, "Aseo", "2026-04-15", 2, EstadoLista.ABIERTA)
             )
     );
 

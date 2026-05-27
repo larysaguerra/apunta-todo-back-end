@@ -1,7 +1,8 @@
 package application.vista;
 
-import application.service.outputs.ListaCompraServicio;
 import application.domain.ListaCompra;
+import application.domain.enums.EstadoLista;
+import application.service.outputs.ListaCompraServicio;
 
 import java.util.Scanner;
 
@@ -36,33 +37,34 @@ public class ListaCompraVista {
                     sc.nextLine();
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
-                    System.out.print("Fecha: ");
+                    System.out.print("Fecha (yyyy-mm-dd): ");
                     String fecha = sc.nextLine();
                     System.out.print("ID usuario: ");
                     int usuarioId = sc.nextInt();
+                    sc.nextLine();
+                    EstadoLista estadoCrear = seleccionarEstado();
 
-                    servicio.crear(new ListaCompra(id, nombre, fecha, usuarioId));
-                    System.out.println("✅ Lista creada");
+                    servicio.crear(new ListaCompra(id, nombre, fecha, usuarioId, estadoCrear));
+                    System.out.println("Lista creada.");
                     break;
 
                 case 2:
                     System.out.print("ID: ");
                     int idBuscar = sc.nextInt();
+                    sc.nextLine();
                     ListaCompra lista = servicio.leerPorId(idBuscar);
                     if (lista == null) {
-                        System.out.println("⚠ No existe lista con ese ID");
+                        System.out.println("No existe lista con ese ID.");
                     } else {
-                        System.out.println(lista.getId() + " - " + lista.getNombre() + " - " + lista.getFecha()
-                                + " - Usuario: " + lista.getUsuarioId());
+                        System.out.println(lista);
                     }
                     break;
 
                 case 3:
                     if (servicio.obtenerTodos().isEmpty()) {
-                        System.out.println("⚠ No hay listas registradas");
+                        System.out.println("No hay listas registradas.");
                     } else {
-                        servicio.obtenerTodos().forEach(l -> System.out.println(l.getId() + " - " + l.getNombre()
-                                + " - " + l.getFecha() + " - Usuario: " + l.getUsuarioId()));
+                        servicio.obtenerTodos().forEach(l -> System.out.println(l));
                     }
                     break;
 
@@ -70,35 +72,60 @@ public class ListaCompraVista {
                     System.out.print("ID a actualizar: ");
                     int idActualizar = sc.nextInt();
                     sc.nextLine();
-                    if (servicio.leerPorId(idActualizar) == null) {
-                        System.out.println("⚠ No existe lista con ese ID");
+                    ListaCompra existente = servicio.leerPorId(idActualizar);
+                    if (existente == null) {
+                        System.out.println("No existe lista con ese ID.");
                         break;
                     }
                     System.out.print("Nuevo nombre: ");
                     String nuevoNombre = sc.nextLine();
-                    System.out.print("Nueva fecha: ");
+                    System.out.print("Nueva fecha (yyyy-mm-dd): ");
                     String nuevaFecha = sc.nextLine();
                     System.out.print("Nuevo ID usuario: ");
                     int nuevoUsuarioId = sc.nextInt();
+                    sc.nextLine();
+                    EstadoLista nuevoEstado = seleccionarEstado();
 
-                    servicio.actualizar(new ListaCompra(idActualizar, nuevoNombre, nuevaFecha, nuevoUsuarioId));
-                    System.out.println("✅ Lista actualizada");
+                    servicio.actualizar(new ListaCompra(idActualizar, nuevoNombre, nuevaFecha, nuevoUsuarioId, nuevoEstado));
+                    System.out.println("Lista actualizada.");
                     break;
 
                 case 5:
                     System.out.print("ID a eliminar: ");
                     int idEliminar = sc.nextInt();
+                    sc.nextLine();
                     servicio.eliminar(idEliminar);
-                    System.out.println("🗑 Lista eliminada");
+                    System.out.println("Lista eliminada.");
                     break;
 
                 case 0:
-                    System.out.println("🔙 Volviendo...");
+                    System.out.println("Volviendo...");
                     break;
 
                 default:
-                    System.out.println("❌ Opción inválida");
+                    System.out.println("Opcion invalida.");
             }
         } while (op != 0);
+    }
+
+    private EstadoLista seleccionarEstado() {
+        System.out.println("Estado de la lista:");
+        System.out.println("  1. FAVORITA  (aparece primero)");
+        System.out.println("  2. ABIERTA");
+        System.out.println("  3. CERRADA");
+        System.out.println("  4. ARCHIVADA");
+        System.out.print("Seleccione: ");
+        int opcion = sc.nextInt();
+        sc.nextLine();
+
+        switch (opcion) {
+            case 1: return EstadoLista.FAVORITA;
+            case 2: return EstadoLista.ABIERTA;
+            case 3: return EstadoLista.CERRADA;
+            case 4: return EstadoLista.ARCHIVADA;
+            default:
+                System.out.println("Opcion invalida. Se asigna ABIERTA por defecto.");
+                return EstadoLista.ABIERTA;
+        }
     }
 }
