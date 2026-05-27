@@ -2,10 +2,12 @@ package application.userinterface;
 
 import application.domain.DetalleLista;
 import application.domain.ListaCompra;
+import application.domain.Producto;
 import application.domain.Usuario;
 import application.service.DetalleListaProductoServicio;
 import application.service.outputs.DesalleListaServicio;
 import application.service.outputs.ListaCompraServicio;
+import application.service.outputs.ProductoServicio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +18,19 @@ public class SesionUsuarioMenu {
     private final ListaCompraServicio listaCompraServicio;
     private final DesalleListaServicio detalleListaServicio;
     private final DetalleListaProductoServicio detalleListaProductoServicio;
+    private final ProductoServicio productoServicio;
     private final Scanner sc = new Scanner(System.in);
 
     public SesionUsuarioMenu(
             ListaCompraServicio listaCompraServicio,
             DesalleListaServicio detalleListaServicio,
-            DetalleListaProductoServicio detalleListaProductoServicio
+            DetalleListaProductoServicio detalleListaProductoServicio,
+            ProductoServicio productoServicio
     ) {
         this.listaCompraServicio = listaCompraServicio;
         this.detalleListaServicio = detalleListaServicio;
         this.detalleListaProductoServicio = detalleListaProductoServicio;
+        this.productoServicio = productoServicio;
     }
 
     public void showMenuForUser(Usuario usuarioLogueado) {
@@ -44,13 +49,13 @@ public class SesionUsuarioMenu {
 
             switch (opcion) {
                 case 1:
-                    mostrarListasConDetalles(usuarioLogueado.getId());
+                    mostrarListasConDetalles(usuarioLogueado);
                     break;
                 case 2:
-                    editarLista(usuarioLogueado.getId());
+                    editarLista(usuarioLogueado);
                     break;
                 case 3:
-                    editarDetalle(usuarioLogueado.getId());
+                    editarDetalle(usuarioLogueado);
                     break;
                 case 0:
                     System.out.println("Sesion cerrada.");
@@ -61,8 +66,8 @@ public class SesionUsuarioMenu {
         } while (opcion != 0);
     }
 
-    private void mostrarListasConDetalles(int usuarioId) {
-        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioId);
+    private void mostrarListasConDetalles(Usuario usuarioLogueado) {
+        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioLogueado.getId());
         if (listasUsuario.isEmpty()) {
             System.out.println("No tienes listas registradas.");
             return;
@@ -81,8 +86,8 @@ public class SesionUsuarioMenu {
         }
     }
 
-    private void editarLista(int usuarioId) {
-        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioId);
+    private void editarLista(Usuario usuarioLogueado) {
+        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioLogueado.getId());
         if (listasUsuario.isEmpty()) {
             System.out.println("No tienes listas para editar.");
             return;
@@ -93,7 +98,8 @@ public class SesionUsuarioMenu {
         sc.nextLine();
 
         ListaCompra lista = listaCompraServicio.leerPorId(listaId);
-        if (lista == null || lista.getUsuarioId() != usuarioId) {
+        // Verificar que la lista existe y pertenece al usuario logueado
+        if (lista == null || lista.getUsuario().getId() != usuarioLogueado.getId()) {
             System.out.println("No puedes editar esa lista.");
             return;
         }
@@ -103,13 +109,14 @@ public class SesionUsuarioMenu {
         System.out.print("Nueva fecha (yyyy-mm-dd): ");
         String nuevaFecha = sc.nextLine();
 
-        ListaCompra actualizada = new ListaCompra(lista.getId(), nuevoNombre, nuevaFecha, usuarioId, lista.getEstado());
+        // Conserva el mismo usuario y estado; solo actualiza nombre y fecha
+        ListaCompra actualizada = new ListaCompra(lista.getId(), nuevoNombre, nuevaFecha, usuarioLogueado, lista.getEstado());
         listaCompraServicio.actualizar(actualizada);
         System.out.println("Lista actualizada con exito.");
     }
 
-    private void editarDetalle(int usuarioId) {
-        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioId);
+    private void editarDetalle(Usuario usuarioLogueado) {
+        List<ListaCompra> listasUsuario = obtenerListasPorUsuario(usuarioLogueado.getId());
         if (listasUsuario.isEmpty()) {
             System.out.println("No tienes listas asociadas.");
             return;
@@ -120,7 +127,7 @@ public class SesionUsuarioMenu {
         sc.nextLine();
 
         ListaCompra lista = listaCompraServicio.leerPorId(listaId);
-        if (lista == null || lista.getUsuarioId() != usuarioId) {
+        if (lista == null || lista.getUsuario().getId() != usuarioLogueado.getId()) {
             System.out.println("No puedes editar detalles de esa lista.");
             return;
         }
@@ -145,13 +152,25 @@ public class SesionUsuarioMenu {
             return;
         }
 
-        System.out.print("Nuevo productoId: ");
+        // Mostrar productos disponibles para elegir
+        System.out.println("Productos disponibles:");
+        productoServicio.obtenerTodos().forEach(p ->
+                System.out.println("  " + p.getId() + " - " + p.getNombre()));
+        System.out.print("Nuevo ID producto: ");
         int nuevoProductoId = sc.nextInt();
+        sc.nextLine();
+
+        Producto nuevoProducto = productoServicio.buscarPorId(nuevoProductoId);
+        if (nuevoProducto == null) {
+            System.out.println("No existe producto con ese ID.");
+            return;
+        }
+
         System.out.print("Nueva cantidad: ");
         int nuevaCantidad = sc.nextInt();
         sc.nextLine();
 
-        DetalleLista actualizado = new DetalleLista(detalle.getId(), nuevoProductoId, nuevaCantidad, listaId, detalle.isComprado());
+        DetalleLista actualizado = new DetalleLista(detalle.getId(), nuevoProducto, nuevaCantidad, listaId, detalle.isComprado());
         detalleListaServicio.actualizar(actualizado);
         System.out.println("Detalle actualizado con exito.");
     }
@@ -159,7 +178,7 @@ public class SesionUsuarioMenu {
     private List<ListaCompra> obtenerListasPorUsuario(int usuarioId) {
         List<ListaCompra> resultado = new ArrayList<>();
         for (ListaCompra lista : listaCompraServicio.obtenerTodos()) {
-            if (lista.getUsuarioId() == usuarioId) {
+            if (lista.getUsuario().getId() == usuarioId) {
                 resultado.add(lista);
             }
         }
@@ -175,5 +194,4 @@ public class SesionUsuarioMenu {
         }
         return resultado;
     }
-
 }

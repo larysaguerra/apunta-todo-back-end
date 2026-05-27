@@ -1,5 +1,6 @@
 package application.repositorio;
 
+import application.domain.CategoriaProducto;
 import application.domain.Producto;
 import application.service.ports.ProductoRepositorioPort;
 
@@ -9,10 +10,14 @@ import java.util.List;
 
 public class ProductoRepositorio implements ProductoRepositorioPort {
 
+    // Categorías que los productos de prueba van a referenciar
+    private final CategoriaProducto lacteos  = new CategoriaProducto(1, "Lacteos", "Productos derivados de la leche");
+    private final CategoriaProducto frutas   = new CategoriaProducto(2, "Frutas", "Comestibles obtenidos de plantas");
+
     private List<Producto> lista = new ArrayList<>(
             Arrays.asList(
-                    new Producto(1, "Leche", "Litros", 1),
-                    new Producto(2, "Manzana", "Kilos", 2)
+                    new Producto(1, "Leche",   "Litros",   lacteos),
+                    new Producto(2, "Manzana", "Kilos",    frutas)
             )
     );
 
@@ -38,5 +43,4 @@ public class ProductoRepositorio implements ProductoRepositorioPort {
     public void eliminar(int id) {
         lista.removeIf(p -> p.getId() == id);
     }
-
 }

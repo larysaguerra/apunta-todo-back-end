@@ -3,7 +3,7 @@ package application.domain;
 public class DetalleLista {
 
     private int id;
-    private int productoId;
+    private Producto producto;  // objeto real, no solo el ID
     private int cantidad;
     private int listaId;
     private boolean comprado;
@@ -12,18 +12,18 @@ public class DetalleLista {
     }
 
     // Constructor sin comprado: por defecto el ítem no está comprado
-    public DetalleLista(int id, int productoId, int cantidad, int listaId) {
+    public DetalleLista(int id, Producto producto, int cantidad, int listaId) {
         this.id = id;
-        this.productoId = productoId;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.listaId = listaId;
         this.comprado = false;
     }
 
     // Constructor completo: permite indicar el estado explícitamente
-    public DetalleLista(int id, int productoId, int cantidad, int listaId, boolean comprado) {
+    public DetalleLista(int id, Producto producto, int cantidad, int listaId, boolean comprado) {
         this.id = id;
-        this.productoId = productoId;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.listaId = listaId;
         this.comprado = comprado;
@@ -37,12 +37,12 @@ public class DetalleLista {
         this.id = id;
     }
 
-    public int getProductoId() {
-        return productoId;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setProductoId(int productoId) {
-        this.productoId = productoId;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {

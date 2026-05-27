@@ -15,6 +15,11 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
+    public Producto buscarPorId(int id) {
+        return repositorio.buscar(id);
+    }
+
+    @Override
     public void crear(Producto producto) {
         if (producto.getNombre() == null || producto.getNombre().isEmpty()) {
             System.out.println("Nombre inválido");
