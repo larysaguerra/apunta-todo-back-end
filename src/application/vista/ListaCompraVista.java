@@ -1,18 +1,22 @@
 package application.vista;
 
 import application.domain.ListaCompra;
+import application.domain.Usuario;
 import application.domain.enums.EstadoLista;
 import application.service.outputs.ListaCompraServicio;
+import application.service.outputs.UsuarioServicio;
 
 import java.util.Scanner;
 
 public class ListaCompraVista {
 
     private final ListaCompraServicio servicio;
+    private final UsuarioServicio usuarioServicio;
     private final Scanner sc = new Scanner(System.in);
 
-    public ListaCompraVista(ListaCompraServicio listaCompraServicio) {
+    public ListaCompraVista(ListaCompraServicio listaCompraServicio, UsuarioServicio usuarioServicio) {
         this.servicio = listaCompraServicio;
+        this.usuarioServicio = usuarioServicio;
     }
 
     public void menu() {
@@ -39,12 +43,23 @@ public class ListaCompraVista {
                     String nombre = sc.nextLine();
                     System.out.print("Fecha (yyyy-mm-dd): ");
                     String fecha = sc.nextLine();
+
+                    // Mostrar usuarios disponibles para elegir
+                    System.out.println("Usuarios disponibles:");
+                    usuarioServicio.obtenerTodos().forEach(u ->
+                            System.out.println("  " + u.getId() + " - " + u.getNombre() + " " + u.getApellido()));
                     System.out.print("ID usuario: ");
                     int usuarioId = sc.nextInt();
                     sc.nextLine();
-                    EstadoLista estadoCrear = seleccionarEstado();
 
-                    servicio.crear(new ListaCompra(id, nombre, fecha, usuarioId, estadoCrear));
+                    Usuario usuario = usuarioServicio.leerPorId(usuarioId);
+                    if (usuario == null) {
+                        System.out.println("No existe usuario con ese ID.");
+                        break;
+                    }
+
+                    EstadoLista estadoCrear = seleccionarEstado();
+                    servicio.crear(new ListaCompra(id, nombre, fecha, usuario, estadoCrear));
                     System.out.println("Lista creada.");
                     break;
 
@@ -81,12 +96,10 @@ public class ListaCompraVista {
                     String nuevoNombre = sc.nextLine();
                     System.out.print("Nueva fecha (yyyy-mm-dd): ");
                     String nuevaFecha = sc.nextLine();
-                    System.out.print("Nuevo ID usuario: ");
-                    int nuevoUsuarioId = sc.nextInt();
-                    sc.nextLine();
                     EstadoLista nuevoEstado = seleccionarEstado();
 
-                    servicio.actualizar(new ListaCompra(idActualizar, nuevoNombre, nuevaFecha, nuevoUsuarioId, nuevoEstado));
+                    // Conserva el mismo usuario, solo actualiza los demás campos
+                    servicio.actualizar(new ListaCompra(idActualizar, nuevoNombre, nuevaFecha, existente.getUsuario(), nuevoEstado));
                     System.out.println("Lista actualizada.");
                     break;
 

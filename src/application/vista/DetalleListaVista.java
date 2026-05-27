@@ -1,7 +1,9 @@
 package application.vista;
 
 import application.domain.DetalleLista;
+import application.domain.Producto;
 import application.service.DetalleListaProductoServicio;
+import application.service.outputs.ProductoServicio;
 import application.service.outputs.DesalleListaServicio;
 
 import java.util.Scanner;
@@ -10,14 +12,17 @@ public class DetalleListaVista {
 
     private final DesalleListaServicio servicio;
     private final DetalleListaProductoServicio detalleListaProductoServicio;
+    private final ProductoServicio productoServicio;
     private final Scanner sc = new Scanner(System.in);
 
     public DetalleListaVista(
             DesalleListaServicio desalleListaServicio,
-            DetalleListaProductoServicio detalleListaProductoServicio
+            DetalleListaProductoServicio detalleListaProductoServicio,
+            ProductoServicio productoServicio
     ) {
         this.servicio = desalleListaServicio;
         this.detalleListaProductoServicio = detalleListaProductoServicio;
+        this.productoServicio = productoServicio;
     }
 
     public void menu() {
@@ -39,8 +44,22 @@ public class DetalleListaVista {
                 case 1:
                     System.out.print("ID: ");
                     int id = sc.nextInt();
+                    sc.nextLine();
+
+                    // Mostrar productos disponibles para elegir
+                    System.out.println("Productos disponibles:");
+                    productoServicio.obtenerTodos().forEach(p ->
+                            System.out.println("  " + p.getId() + " - " + p.getNombre()));
                     System.out.print("ID producto: ");
                     int productoId = sc.nextInt();
+                    sc.nextLine();
+
+                    Producto producto = productoServicio.buscarPorId(productoId);
+                    if (producto == null) {
+                        System.out.println("No existe producto con ese ID.");
+                        break;
+                    }
+
                     System.out.print("Cantidad: ");
                     int cantidad = sc.nextInt();
                     System.out.print("ID lista: ");
@@ -48,7 +67,7 @@ public class DetalleListaVista {
                     sc.nextLine();
 
                     // Todo ítem nuevo empieza sin comprar
-                    servicio.crear(new DetalleLista(id, productoId, cantidad, listaId));
+                    servicio.crear(new DetalleLista(id, producto, cantidad, listaId));
                     System.out.println("Ítem agregado.");
                     break;
 
@@ -82,8 +101,21 @@ public class DetalleListaVista {
                         System.out.println("No existe ítem con ese ID.");
                         break;
                     }
+
+                    // Mostrar productos disponibles para elegir
+                    System.out.println("Productos disponibles:");
+                    productoServicio.obtenerTodos().forEach(p ->
+                            System.out.println("  " + p.getId() + " - " + p.getNombre()));
                     System.out.print("Nuevo ID producto: ");
                     int nuevoProductoId = sc.nextInt();
+                    sc.nextLine();
+
+                    Producto nuevoProducto = productoServicio.buscarPorId(nuevoProductoId);
+                    if (nuevoProducto == null) {
+                        System.out.println("No existe producto con ese ID.");
+                        break;
+                    }
+
                     System.out.print("Nueva cantidad: ");
                     int nuevaCantidad = sc.nextInt();
                     System.out.print("Nuevo ID lista: ");
@@ -91,7 +123,7 @@ public class DetalleListaVista {
                     sc.nextLine();
                     boolean nuevoComprado = preguntarComprado(existente.isComprado());
 
-                    servicio.actualizar(new DetalleLista(idActualizar, nuevoProductoId, nuevaCantidad, nuevaListaId, nuevoComprado));
+                    servicio.actualizar(new DetalleLista(idActualizar, nuevoProducto, nuevaCantidad, nuevaListaId, nuevoComprado));
                     System.out.println("Ítem actualizado.");
                     break;
 

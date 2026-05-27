@@ -22,6 +22,16 @@ public class CategoriaRepositorio implements CategoriaRepositorioPort {
     }
 
     @Override
+    public CategoriaProducto buscarPorId(int id) {
+        for (CategoriaProducto categoria : lista) {
+            if (categoria.getId() == id) {
+                return categoria;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<CategoriaProducto> obtenerTodos() {
         return lista;
     }

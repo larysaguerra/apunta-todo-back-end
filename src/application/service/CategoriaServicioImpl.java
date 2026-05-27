@@ -20,6 +20,11 @@ public class CategoriaServicioImpl implements CategoriaServicio {
     }
 
     @Override
+    public CategoriaProducto buscarPorId(int id) {
+        return repositorio.buscarPorId(id);
+    }
+
+    @Override
     public List<CategoriaProducto> obtenerTodos() {
         return repositorio.obtenerTodos();
     }
