@@ -22,7 +22,7 @@ Desarrollada como **Proyecto Integrador del 2do semestre** del programa *Técnic
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <URL-del-repositorio>
+git clone [<URL-del-repositorio>](https://github.com/larysaguerra/apunta-todo-back-end.git)
 cd apunta-todo-back-end
 ```
 
