@@ -1,0 +1,429 @@
+@startuml Apunta-ToDo - Diagrama de Clases
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam classFontSize 12
+skinparam class {
+  BackgroundColor White
+  BorderColor #555
+  ArrowColor #555
+}
+skinparam package {
+  BackgroundColor #F8F8F8
+  BorderColor #999
+}
+
+' ─────────────────────────────────────────
+' DOMINIO
+' ─────────────────────────────────────────
+package "domain" #E8F4E8 {
+
+  abstract class Persona {
+    # id : int
+    # nombre : String
+    # apellido : String
+    # telefono : String
+    # correo : String
+    + getId() : int
+    + getNombre() : String
+    + getApellido() : String
+    + getTelefono() : String
+    + getCorreo() : String
+  }
+
+  class Usuario {
+    - contrasena : String
+    - rol : Rol
+    + getContrasena() : String
+    + getRol() : Rol
+    + setRol(Rol) : void
+  }
+
+  class Rol {
+    - id : int
+    - nombre : String
+    - descripcion : String
+    + getId() : int
+    + getNombre() : String
+    + getDescripcion() : String
+  }
+
+  class Producto {
+    - id : int
+    - nombre : String
+    - unidadMedida : String
+    - categoria : CategoriaProducto
+    + getId() : int
+    + getNombre() : String
+    + getUnidadMedida() : String
+    + getCategoria() : CategoriaProducto
+  }
+
+  class CategoriaProducto {
+    - id : int
+    - nombre : String
+    - descripcion : String
+    + getId() : int
+    + getNombre() : String
+    + getDescripcion() : String
+  }
+
+  class ListaCompra {
+    - id : int
+    - nombre : String
+    - fecha : String
+    - usuario : Usuario
+    - estado : EstadoLista
+    + getId() : int
+    + getNombre() : String
+    + getFecha() : String
+    + getUsuario() : Usuario
+    + getEstado() : EstadoLista
+  }
+
+  class DetalleLista {
+    - id : int
+    - producto : Producto
+    - cantidad : int
+    - listaId : int
+    - comprado : boolean
+    + getId() : int
+    + getProducto() : Producto
+    + getCantidad() : int
+    + getListaId() : int
+    + isComprado() : boolean
+  }
+
+  enum EstadoLista {
+    FAVORITA
+    ABIERTA
+    CERRADA
+    ARCHIVADA
+  }
+
+  class ValidationRules <<utility>> {
+    {static} + NOMBRE_VALIDO : Predicate<String>
+    {static} + EMAIL_VALIDO : Predicate<String>
+    {static} + CONTRASENA_VALIDA : Predicate<String>
+    {static} + CANTIDAD_VALIDA : Predicate<Integer>
+    {static} + FECHA_VALIDA : Predicate<String>
+  }
+
+  ' Relaciones del dominio
+  Persona <|-- Usuario
+  Usuario "1" --> "1" Rol
+  Producto "1" --> "1" CategoriaProducto
+  ListaCompra "1" --> "1" Usuario
+  ListaCompra "1" --> "1" EstadoLista
+  DetalleLista "1" --> "1" Producto
+}
+
+' ─────────────────────────────────────────
+' SERVICE — PUERTOS DE ENTRADA (outputs)
+' ─────────────────────────────────────────
+package "service.outputs" #E8EEF8 {
+  interface RolServicio {
+    + crear(Rol) : void
+    + buscarPorId(int) : Optional<Rol>
+    + obtenerTodos() : List<Rol>
+    + eliminar(int) : void
+  }
+  interface CategoriaServicio {
+    + crear(CategoriaProducto) : void
+    + buscarPorId(int) : Optional<CategoriaProducto>
+    + obtenerTodos() : List<CategoriaProducto>
+    + eliminar(int) : void
+  }
+  interface UsuarioServicio {
+    + crear(Usuario) : void
+    + leerPorId(int) : Optional<Usuario>
+    + iniciarSesion(String, String) : Usuario
+    + obtenerTodos() : List<Usuario>
+    + actualizar(Usuario) : void
+    + eliminar(int) : void
+  }
+  interface ProductoServicio {
+    + crear(Producto) : void
+    + buscarPorId(int) : Optional<Producto>
+    + obtenerTodos() : List<Producto>
+    + eliminar(int) : void
+  }
+  interface ListaCompraServicio {
+    + crear(ListaCompra) : void
+    + leerPorId(int) : Optional<ListaCompra>
+    + obtenerTodos() : List<ListaCompra>
+    + actualizar(ListaCompra) : void
+    + eliminar(int) : void
+  }
+  interface DesalleListaServicio {
+    + crear(DetalleLista) : void
+    + leerPorId(int) : Optional<DetalleLista>
+    + obtenerTodos() : List<DetalleLista>
+    + actualizar(DetalleLista) : void
+    + eliminar(int) : void
+  }
+}
+
+' ─────────────────────────────────────────
+' SERVICE — IMPLEMENTACIONES
+' ─────────────────────────────────────────
+package "service.impl" #EEF0F8 {
+  class RolServicioImpl {
+    - repositorio : RolRepositorioPort
+    + RolServicioImpl(RolRepositorioPort)
+  }
+  class CategoriaServicioImpl {
+    - repositorio : CategoriaRepositorioPort
+    + CategoriaServicioImpl(CategoriaRepositorioPort)
+  }
+  class UsuarioServicioImpl {
+    - repositorio : UsuarioRepositorioPort
+    + UsuarioServicioImpl(UsuarioRepositorioPort)
+  }
+  class ProductoServicioImpl {
+    - repositorio : ProductoRepositorioPort
+    + ProductoServicioImpl(ProductoRepositorioPort)
+  }
+  class ListaCompraServicioImpl {
+    - repositorio : ListaCompraRepositorioPort
+    + ListaCompraServicioImpl(ListaCompraRepositorioPort)
+  }
+  class DetalleListaServicioImpl {
+    - repositorio : DetalleListaRepositorioPort
+    + DetalleListaServicioImpl(DetalleListaRepositorioPort)
+  }
+  class DetalleListaProductoServicio {
+    + describirDetalle(DetalleLista) : String
+    + describirDetalleConLista(DetalleLista) : String
+  }
+
+  RolServicioImpl ..|> RolServicio
+  CategoriaServicioImpl ..|> CategoriaServicio
+  UsuarioServicioImpl ..|> UsuarioServicio
+  ProductoServicioImpl ..|> ProductoServicio
+  ListaCompraServicioImpl ..|> ListaCompraServicio
+  DetalleListaServicioImpl ..|> DesalleListaServicio
+}
+
+' ─────────────────────────────────────────
+' SERVICE — PUERTOS DE SALIDA (ports)
+' ─────────────────────────────────────────
+package "service.ports" #F0ECF8 {
+  interface RolRepositorioPort {
+    + guardar(Rol) : void
+    + buscarPorId(int) : Optional<Rol>
+    + obtenerTodos() : List<Rol>
+    + eliminar(int) : void
+  }
+  interface CategoriaRepositorioPort {
+    + guardar(CategoriaProducto) : void
+    + buscarPorId(int) : Optional<CategoriaProducto>
+    + obtenerTodos() : List<CategoriaProducto>
+    + eliminar(int) : void
+  }
+  interface UsuarioRepositorioPort {
+    + guardar(Usuario) : void
+    + buscarPorId(int) : Optional<Usuario>
+    + obtenerTodos() : List<Usuario>
+    + actualizar(Usuario) : void
+    + eliminar(int) : void
+  }
+  interface ProductoRepositorioPort {
+    + guardar(Producto) : void
+    + buscar(int) : Optional<Producto>
+    + obtenerTodos() : List<Producto>
+    + eliminar(int) : void
+  }
+  interface ListaCompraRepositorioPort {
+    + guardar(ListaCompra) : void
+    + buscarPorId(int) : Optional<ListaCompra>
+    + obtenerTodos() : List<ListaCompra>
+    + actualizar(ListaCompra) : void
+    + eliminar(int) : void
+  }
+  interface DetalleListaRepositorioPort {
+    + guardar(DetalleLista) : void
+    + buscarPorId(int) : Optional<DetalleLista>
+    + obtenerTodos() : List<DetalleLista>
+    + actualizar(DetalleLista) : void
+    + eliminar(int) : void
+  }
+
+  ' Impls dependen de sus ports
+  RolServicioImpl --> RolRepositorioPort
+  CategoriaServicioImpl --> CategoriaRepositorioPort
+  UsuarioServicioImpl --> UsuarioRepositorioPort
+  ProductoServicioImpl --> ProductoRepositorioPort
+  ListaCompraServicioImpl --> ListaCompraRepositorioPort
+  DetalleListaServicioImpl --> DetalleListaRepositorioPort
+}
+
+' ─────────────────────────────────────────
+' PERSISTENCIA — MAPPERS
+' ─────────────────────────────────────────
+package "persistence.mapper" #FDF4E8 {
+  interface "RowMapper<T>" as RowMapper {
+    + mapRow(ResultSet) : T
+  }
+  class RolRowMapper
+  class CategoriaRowMapper
+  class UsuarioRowMapper
+  class ProductoRowMapper
+  class ListaCompraRowMapper
+  class DetalleListaRowMapper
+
+  RolRowMapper ..|> RowMapper
+  CategoriaRowMapper ..|> RowMapper
+  UsuarioRowMapper ..|> RowMapper
+  ProductoRowMapper ..|> RowMapper
+  ListaCompraRowMapper ..|> RowMapper
+  DetalleListaRowMapper ..|> RowMapper
+}
+
+' ─────────────────────────────────────────
+' PERSISTENCIA — ADAPTADORES MySQL
+' ─────────────────────────────────────────
+package "persistence.repositorio" #FDE8E8 {
+  class RolAdapterMySql {
+    - mapper : RolRowMapper
+    - getConexion() : Connection
+  }
+  class CategoriaAdapterMySql {
+    - mapper : CategoriaRowMapper
+    - getConexion() : Connection
+  }
+  class UsuarioAdapterMySql {
+    - mapper : UsuarioRowMapper
+    - {static} SELECT_BASE : String
+    - getConexion() : Connection
+  }
+  class ProductoAdapterMySql {
+    - mapper : ProductoRowMapper
+    - {static} SELECT_BASE : String
+    - getConexion() : Connection
+  }
+  class ListaCompraAdapterMySql {
+    - mapper : ListaCompraRowMapper
+    - {static} SELECT_BASE : String
+    - getConexion() : Connection
+  }
+  class DetalleListaAdapterMySql {
+    - mapper : DetalleListaRowMapper
+    - {static} SELECT_BASE : String
+    - getConexion() : Connection
+  }
+
+  RolAdapterMySql ..|> RolRepositorioPort
+  CategoriaAdapterMySql ..|> CategoriaRepositorioPort
+  UsuarioAdapterMySql ..|> UsuarioRepositorioPort
+  ProductoAdapterMySql ..|> ProductoRepositorioPort
+  ListaCompraAdapterMySql ..|> ListaCompraRepositorioPort
+  DetalleListaAdapterMySql ..|> DetalleListaRepositorioPort
+
+  RolAdapterMySql --> RolRowMapper
+  CategoriaAdapterMySql --> CategoriaRowMapper
+  UsuarioAdapterMySql --> UsuarioRowMapper
+  ProductoAdapterMySql --> ProductoRowMapper
+  ListaCompraAdapterMySql --> ListaCompraRowMapper
+  DetalleListaAdapterMySql --> DetalleListaRowMapper
+}
+
+' ─────────────────────────────────────────
+' PERSISTENCIA — CONEXIÓN (Singleton)
+' ─────────────────────────────────────────
+package "persistence.database" #F8E8F8 {
+  class DataBaseConnectionMySql <<Singleton>> {
+    - {static} instancia : DataBaseConnectionMySql
+    - conexion : Connection
+    - {static} URL : String
+    - {static} USUARIO : String
+    - {static} PASSWORD : String
+    - DataBaseConnectionMySql()
+    + {static} getInstance() : DataBaseConnectionMySql
+    + getConexion() : Connection
+  }
+
+  RolAdapterMySql --> DataBaseConnectionMySql
+  CategoriaAdapterMySql --> DataBaseConnectionMySql
+  UsuarioAdapterMySql --> DataBaseConnectionMySql
+  ProductoAdapterMySql --> DataBaseConnectionMySql
+  ListaCompraAdapterMySql --> DataBaseConnectionMySql
+  DetalleListaAdapterMySql --> DataBaseConnectionMySql
+}
+
+' ─────────────────────────────────────────
+' VISTAS
+' ─────────────────────────────────────────
+package "vista" #E8F8F8 {
+  class RolVista {
+    - servicio : RolServicio
+  }
+  class CategoriaVista {
+    - servicio : CategoriaServicio
+  }
+  class UsuarioVista {
+    - servicio : UsuarioServicio
+    - rolServicio : RolServicio
+  }
+  class ProductoVista {
+    - servicio : ProductoServicio
+    - categoriaServicio : CategoriaServicio
+  }
+  class ListaCompraVista {
+    - servicio : ListaCompraServicio
+    - usuarioServicio : UsuarioServicio
+  }
+  class DetalleListaVista {
+    - servicio : DesalleListaServicio
+    - productoServicio : ProductoServicio
+  }
+
+  RolVista --> RolServicio
+  CategoriaVista --> CategoriaServicio
+  UsuarioVista --> UsuarioServicio
+  UsuarioVista --> RolServicio
+  ProductoVista --> ProductoServicio
+  ProductoVista --> CategoriaServicio
+  ListaCompraVista --> ListaCompraServicio
+  ListaCompraVista --> UsuarioServicio
+  DetalleListaVista --> DesalleListaServicio
+  DetalleListaVista --> ProductoServicio
+}
+
+' ─────────────────────────────────────────
+' INTERFAZ DE USUARIO
+' ─────────────────────────────────────────
+package "userinterface" #E8F8F4 {
+  class MenuApp {
+    - rolVista : RolVista
+    - categoriaVista : CategoriaVista
+    - usuarioVista : UsuarioVista
+    - productoVista : ProductoVista
+    - listaCompraVista : ListaCompraVista
+    - detalleListaVista : DetalleListaVista
+    - sesionUsuarioMenu : SesionUsuarioMenu
+    - usuarioServicio : UsuarioServicio
+    + showMainMenu() : void
+  }
+  class SesionUsuarioMenu {
+    - listaCompraServicio : ListaCompraServicio
+    - detalleListaServicio : DesalleListaServicio
+    - productoServicio : ProductoServicio
+    + showMenuForUser(Usuario) : void
+  }
+
+  MenuApp --> SesionUsuarioMenu
+  MenuApp --> UsuarioServicio
+}
+
+' ─────────────────────────────────────────
+' CONFIGURACIÓN (Factory)
+' ─────────────────────────────────────────
+package "configuration" #F4F4E8 {
+  class Config <<Factory>> {
+    + {static} createMenuApp() : MenuApp
+  }
+}
+
+@enduml
