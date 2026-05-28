@@ -2,10 +2,12 @@ package application.vista;
 
 import application.domain.DetalleLista;
 import application.domain.Producto;
+import application.domain.validaciones.ValidationRules;
 import application.service.DetalleListaProductoServicio;
 import application.service.outputs.ProductoServicio;
 import application.service.outputs.DesalleListaServicio;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class DetalleListaVista {
@@ -42,10 +44,6 @@ public class DetalleListaVista {
 
             switch (op) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
                     // Mostrar productos disponibles para elegir
                     System.out.println("Productos disponibles:");
                     productoServicio.obtenerTodos().forEach(p ->
@@ -54,20 +52,26 @@ public class DetalleListaVista {
                     int productoId = sc.nextInt();
                     sc.nextLine();
 
-                    Producto producto = productoServicio.buscarPorId(productoId);
-                    if (producto == null) {
+                    Optional<Producto> productoOpt = productoServicio.buscarPorId(productoId);
+                    if (productoOpt.isEmpty()) {
                         System.out.println("No existe producto con ese ID.");
                         break;
                     }
+                    Producto producto = productoOpt.get();
 
                     System.out.print("Cantidad: ");
                     int cantidad = sc.nextInt();
+                    sc.nextLine();
+                    if (!ValidationRules.CANTIDAD_VALIDA.test(cantidad)) {
+                        System.out.println("Cantidad invalida: debe ser mayor que 0.");
+                        break;
+                    }
                     System.out.print("ID lista: ");
                     int listaId = sc.nextInt();
                     sc.nextLine();
 
-                    // Todo ítem nuevo empieza sin comprar
-                    servicio.crear(new DetalleLista(id, producto, cantidad, listaId));
+                    // El ID lo asigna MySQL automáticamente (AUTO_INCREMENT), pasamos 0
+                    servicio.crear(new DetalleLista(0, producto, cantidad, listaId));
                     System.out.println("Ítem agregado.");
                     break;
 
@@ -75,11 +79,11 @@ public class DetalleListaVista {
                     System.out.print("ID: ");
                     int idBuscar = sc.nextInt();
                     sc.nextLine();
-                    DetalleLista detalle = servicio.leerPorId(idBuscar);
-                    if (detalle == null) {
+                    Optional<DetalleLista> detalleOpt = servicio.leerPorId(idBuscar);
+                    if (detalleOpt.isEmpty()) {
                         System.out.println("No existe ítem con ese ID.");
                     } else {
-                        System.out.println(detalleListaProductoServicio.describirDetalleConLista(detalle));
+                        System.out.println(detalleListaProductoServicio.describirDetalleConLista(detalleOpt.get()));
                     }
                     break;
 
@@ -96,11 +100,12 @@ public class DetalleListaVista {
                     System.out.print("ID a actualizar: ");
                     int idActualizar = sc.nextInt();
                     sc.nextLine();
-                    DetalleLista existente = servicio.leerPorId(idActualizar);
-                    if (existente == null) {
+                    Optional<DetalleLista> existenteOpt = servicio.leerPorId(idActualizar);
+                    if (existenteOpt.isEmpty()) {
                         System.out.println("No existe ítem con ese ID.");
                         break;
                     }
+                    DetalleLista existente = existenteOpt.get();
 
                     // Mostrar productos disponibles para elegir
                     System.out.println("Productos disponibles:");
@@ -110,14 +115,20 @@ public class DetalleListaVista {
                     int nuevoProductoId = sc.nextInt();
                     sc.nextLine();
 
-                    Producto nuevoProducto = productoServicio.buscarPorId(nuevoProductoId);
-                    if (nuevoProducto == null) {
+                    Optional<Producto> nuevoProductoOpt = productoServicio.buscarPorId(nuevoProductoId);
+                    if (nuevoProductoOpt.isEmpty()) {
                         System.out.println("No existe producto con ese ID.");
                         break;
                     }
+                    Producto nuevoProducto = nuevoProductoOpt.get();
 
                     System.out.print("Nueva cantidad: ");
                     int nuevaCantidad = sc.nextInt();
+                    sc.nextLine();
+                    if (!ValidationRules.CANTIDAD_VALIDA.test(nuevaCantidad)) {
+                        System.out.println("Cantidad invalida: debe ser mayor que 0.");
+                        break;
+                    }
                     System.out.print("Nuevo ID lista: ");
                     int nuevaListaId = sc.nextInt();
                     sc.nextLine();

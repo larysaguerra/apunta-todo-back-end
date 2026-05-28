@@ -2,11 +2,12 @@ package application.service.outputs;
 
 import application.domain.CategoriaProducto;
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoriaServicio {
 
     void crear(CategoriaProducto categoria);
-    CategoriaProducto buscarPorId(int id);
+    Optional<CategoriaProducto> buscarPorId(int id);
     List<CategoriaProducto> obtenerTodos();
     void eliminar(int id);
 }

@@ -5,6 +5,7 @@ import application.service.ports.UsuarioRepositorioPort;
 import application.domain.Usuario;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UsuarioServicioImpl implements UsuarioServicio {
 
@@ -20,7 +21,7 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public Usuario leerPorId(int id) {
+    public Optional<Usuario> leerPorId(int id) {
         return repositorio.buscarPorId(id);
     }
 

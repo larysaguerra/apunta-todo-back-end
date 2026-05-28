@@ -30,14 +30,13 @@ public class RolVista {
 
             switch (op) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
+                    System.out.print("Descripcion: ");
+                    String descripcion = sc.nextLine();
 
-                    Rol rol = new Rol(id, nombre, "General");
+                    // El ID lo asigna MySQL automáticamente (AUTO_INCREMENT), pasamos 0
+                    Rol rol = new Rol(0, nombre, descripcion);
                     servicio.crear(rol);
 
                     System.out.println("✅ Rol guardado");

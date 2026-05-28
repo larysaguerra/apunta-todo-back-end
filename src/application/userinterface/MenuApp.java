@@ -6,7 +6,7 @@ import application.vista.*;
 
 import java.util.Scanner;
 
-public  class MenuApp {
+public class MenuApp {
 
     private final RolVista rolVista;
     private final UsuarioVista usuarioVista;

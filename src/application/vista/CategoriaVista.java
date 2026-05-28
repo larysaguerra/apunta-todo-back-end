@@ -1,6 +1,7 @@
 package application.vista;
 
 import application.domain.CategoriaProducto;
+import application.domain.validaciones.ValidationRules;
 import application.service.outputs.CategoriaServicio;
 
 import java.util.Scanner;
@@ -30,14 +31,17 @@ public class CategoriaVista {
 
             switch (op) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
+                    if (!ValidationRules.NOMBRE_VALIDO.test(nombre)) {
+                        System.out.println("Nombre invalido: no puede estar vacio ni contener numeros.");
+                        break;
+                    }
+                    System.out.print("Descripcion: ");
+                    String descripcion = sc.nextLine();
 
-                    CategoriaProducto categoria = new CategoriaProducto(id, nombre, "General");
+                    // El ID lo asigna MySQL automáticamente (AUTO_INCREMENT), pasamos 0
+                    CategoriaProducto categoria = new CategoriaProducto(0, nombre, descripcion);
                     servicio.crear(categoria);
 
                     System.out.println("✅ Categoria guardada");

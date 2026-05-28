@@ -3,9 +3,11 @@ package application.vista;
 import application.domain.ListaCompra;
 import application.domain.Usuario;
 import application.domain.enums.EstadoLista;
+import application.domain.validaciones.ValidationRules;
 import application.service.outputs.ListaCompraServicio;
 import application.service.outputs.UsuarioServicio;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ListaCompraVista {
@@ -36,13 +38,18 @@ public class ListaCompraVista {
 
             switch (op) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
+                    if (!ValidationRules.NOMBRE_VALIDO.test(nombre)) {
+                        System.out.println("Nombre invalido: no puede estar vacio ni contener numeros.");
+                        break;
+                    }
                     System.out.print("Fecha (yyyy-mm-dd): ");
                     String fecha = sc.nextLine();
+                    if (!ValidationRules.FECHA_VALIDA.test(fecha)) {
+                        System.out.println("Fecha invalida: debe tener formato yyyy-MM-dd (ej: 2025-12-31).");
+                        break;
+                    }
 
                     // Mostrar usuarios disponibles para elegir
                     System.out.println("Usuarios disponibles:");
@@ -52,14 +59,16 @@ public class ListaCompraVista {
                     int usuarioId = sc.nextInt();
                     sc.nextLine();
 
-                    Usuario usuario = usuarioServicio.leerPorId(usuarioId);
-                    if (usuario == null) {
+                    Optional<Usuario> usuarioOpt = usuarioServicio.leerPorId(usuarioId);
+                    if (usuarioOpt.isEmpty()) {
                         System.out.println("No existe usuario con ese ID.");
                         break;
                     }
+                    Usuario usuario = usuarioOpt.get();
 
                     EstadoLista estadoCrear = seleccionarEstado();
-                    servicio.crear(new ListaCompra(id, nombre, fecha, usuario, estadoCrear));
+                    // El ID lo asigna MySQL automáticamente (AUTO_INCREMENT), pasamos 0
+                    servicio.crear(new ListaCompra(0, nombre, fecha, usuario, estadoCrear));
                     System.out.println("Lista creada.");
                     break;
 
@@ -67,11 +76,11 @@ public class ListaCompraVista {
                     System.out.print("ID: ");
                     int idBuscar = sc.nextInt();
                     sc.nextLine();
-                    ListaCompra lista = servicio.leerPorId(idBuscar);
-                    if (lista == null) {
+                    Optional<ListaCompra> listaOpt = servicio.leerPorId(idBuscar);
+                    if (listaOpt.isEmpty()) {
                         System.out.println("No existe lista con ese ID.");
                     } else {
-                        System.out.println(lista);
+                        System.out.println(listaOpt.get());
                     }
                     break;
 
@@ -87,15 +96,24 @@ public class ListaCompraVista {
                     System.out.print("ID a actualizar: ");
                     int idActualizar = sc.nextInt();
                     sc.nextLine();
-                    ListaCompra existente = servicio.leerPorId(idActualizar);
-                    if (existente == null) {
+                    Optional<ListaCompra> existenteOpt = servicio.leerPorId(idActualizar);
+                    if (existenteOpt.isEmpty()) {
                         System.out.println("No existe lista con ese ID.");
                         break;
                     }
+                    ListaCompra existente = existenteOpt.get();
                     System.out.print("Nuevo nombre: ");
                     String nuevoNombre = sc.nextLine();
+                    if (!ValidationRules.NOMBRE_VALIDO.test(nuevoNombre)) {
+                        System.out.println("Nombre invalido: no puede estar vacio ni contener numeros.");
+                        break;
+                    }
                     System.out.print("Nueva fecha (yyyy-mm-dd): ");
                     String nuevaFecha = sc.nextLine();
+                    if (!ValidationRules.FECHA_VALIDA.test(nuevaFecha)) {
+                        System.out.println("Fecha invalida: debe tener formato yyyy-MM-dd (ej: 2025-12-31).");
+                        break;
+                    }
                     EstadoLista nuevoEstado = seleccionarEstado();
 
                     // Conserva el mismo usuario, solo actualiza los demás campos

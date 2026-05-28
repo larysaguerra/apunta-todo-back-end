@@ -5,6 +5,7 @@ import application.service.outputs.CategoriaServicio;
 import application.service.ports.CategoriaRepositorioPort;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CategoriaServicioImpl implements CategoriaServicio {
 
@@ -20,7 +21,7 @@ public class CategoriaServicioImpl implements CategoriaServicio {
     }
 
     @Override
-    public CategoriaProducto buscarPorId(int id) {
+    public Optional<CategoriaProducto> buscarPorId(int id) {
         return repositorio.buscarPorId(id);
     }
 

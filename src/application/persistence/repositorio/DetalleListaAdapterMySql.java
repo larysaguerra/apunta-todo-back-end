@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DetalleListaAdapterMySql implements DetalleListaRepositorioPort {
 
@@ -44,19 +45,19 @@ public class DetalleListaAdapterMySql implements DetalleListaRepositorioPort {
     }
 
     @Override
-    public DetalleLista buscarPorId(int id) {
+    public Optional<DetalleLista> buscarPorId(int id) {
         String sql = SELECT_BASE + "WHERE i.id_item = ?";
         try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapper.mapRow(rs);
+                    return Optional.of(mapper.mapRow(rs));
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error al buscar detalle: " + e.getMessage());
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

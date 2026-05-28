@@ -5,6 +5,7 @@ import application.service.outputs.RolServicio;
 import application.service.ports.RolRepositorioPort;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RolServicioImpl implements RolServicio {
 
@@ -20,7 +21,7 @@ public class RolServicioImpl implements RolServicio {
     }
 
     @Override
-    public Rol buscarPorId(int id) {
+    public Optional<Rol> buscarPorId(int id) {
         return repositorio.buscarPorId(id);
     }
 

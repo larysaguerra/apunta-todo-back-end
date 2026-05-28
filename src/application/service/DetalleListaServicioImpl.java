@@ -5,6 +5,7 @@ import application.service.ports.DetalleListaRepositorioPort;
 import application.domain.DetalleLista;
 
 import java.util.List;
+import java.util.Optional;
 
 public class DetalleListaServicioImpl implements DesalleListaServicio {
 
@@ -20,7 +21,7 @@ public class DetalleListaServicioImpl implements DesalleListaServicio {
     }
 
     @Override
-    public DetalleLista leerPorId(int id) {
+    public Optional<DetalleLista> leerPorId(int id) {
         return repositorio.buscarPorId(id);
     }
 

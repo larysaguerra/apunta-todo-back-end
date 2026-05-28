@@ -2,9 +2,11 @@ package application.vista;
 
 import application.domain.CategoriaProducto;
 import application.domain.Producto;
+import application.domain.validaciones.ValidationRules;
 import application.service.outputs.CategoriaServicio;
 import application.service.outputs.ProductoServicio;
 
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ProductoVista {
@@ -33,12 +35,12 @@ public class ProductoVista {
 
             switch (op) {
                 case 1:
-                    System.out.print("ID: ");
-                    int id = sc.nextInt();
-                    sc.nextLine();
-
                     System.out.print("Nombre: ");
                     String nombre = sc.nextLine();
+                    if (!ValidationRules.NOMBRE_VALIDO.test(nombre)) {
+                        System.out.println("Nombre invalido: no puede estar vacio ni contener numeros.");
+                        break;
+                    }
 
                     System.out.print("Unidad de medida (ej: Kilos, Litros, Unidad): ");
                     String unidad = sc.nextLine();
@@ -51,13 +53,15 @@ public class ProductoVista {
                     int categoriaId = sc.nextInt();
                     sc.nextLine();
 
-                    CategoriaProducto categoria = categoriaServicio.buscarPorId(categoriaId);
-                    if (categoria == null) {
+                    Optional<CategoriaProducto> categoriaOpt = categoriaServicio.buscarPorId(categoriaId);
+                    if (categoriaOpt.isEmpty()) {
                         System.out.println("No existe categoria con ese ID.");
                         break;
                     }
+                    CategoriaProducto categoria = categoriaOpt.get();
 
-                    servicio.crear(new Producto(id, nombre, unidad, categoria));
+                    // El ID lo asigna MySQL automáticamente (AUTO_INCREMENT), pasamos 0
+                    servicio.crear(new Producto(0, nombre, unidad, categoria));
                     System.out.println("Producto guardado.");
                     break;
 
