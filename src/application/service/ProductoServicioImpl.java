@@ -5,6 +5,7 @@ import application.service.outputs.ProductoServicio;
 import application.service.ports.ProductoRepositorioPort;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ProductoServicioImpl implements ProductoServicio {
 
@@ -15,7 +16,7 @@ public class ProductoServicioImpl implements ProductoServicio {
     }
 
     @Override
-    public Producto buscarPorId(int id) {
+    public Optional<Producto> buscarPorId(int id) {
         return repositorio.buscar(id);
     }
 

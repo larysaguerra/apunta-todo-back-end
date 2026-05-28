@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UsuarioAdapterMySql implements UsuarioRepositorioPort {
 
@@ -45,19 +46,19 @@ public class UsuarioAdapterMySql implements UsuarioRepositorioPort {
     }
 
     @Override
-    public Usuario buscarPorId(int id) {
+    public Optional<Usuario> buscarPorId(int id) {
         String sql = SELECT_BASE + "WHERE u.id_usuario = ?";
         try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapper.mapRow(rs);
+                    return Optional.of(mapper.mapRow(rs));
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error al buscar usuario: " + e.getMessage());
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

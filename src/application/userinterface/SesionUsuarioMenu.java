@@ -11,6 +11,7 @@ import application.service.outputs.ProductoServicio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class SesionUsuarioMenu {
@@ -97,12 +98,13 @@ public class SesionUsuarioMenu {
         int listaId = sc.nextInt();
         sc.nextLine();
 
-        ListaCompra lista = listaCompraServicio.leerPorId(listaId);
+        Optional<ListaCompra> listaOpt = listaCompraServicio.leerPorId(listaId);
         // Verificar que la lista existe y pertenece al usuario logueado
-        if (lista == null || lista.getUsuario().getId() != usuarioLogueado.getId()) {
+        if (listaOpt.isEmpty() || listaOpt.get().getUsuario().getId() != usuarioLogueado.getId()) {
             System.out.println("No puedes editar esa lista.");
             return;
         }
+        ListaCompra lista = listaOpt.get();
 
         System.out.print("Nuevo nombre: ");
         String nuevoNombre = sc.nextLine();
@@ -126,8 +128,8 @@ public class SesionUsuarioMenu {
         int listaId = sc.nextInt();
         sc.nextLine();
 
-        ListaCompra lista = listaCompraServicio.leerPorId(listaId);
-        if (lista == null || lista.getUsuario().getId() != usuarioLogueado.getId()) {
+        Optional<ListaCompra> listaEditarOpt = listaCompraServicio.leerPorId(listaId);
+        if (listaEditarOpt.isEmpty() || listaEditarOpt.get().getUsuario().getId() != usuarioLogueado.getId()) {
             System.out.println("No puedes editar detalles de esa lista.");
             return;
         }
@@ -146,11 +148,12 @@ public class SesionUsuarioMenu {
         int detalleId = sc.nextInt();
         sc.nextLine();
 
-        DetalleLista detalle = detalleListaServicio.leerPorId(detalleId);
-        if (detalle == null || detalle.getListaId() != listaId) {
+        Optional<DetalleLista> detalleOpt = detalleListaServicio.leerPorId(detalleId);
+        if (detalleOpt.isEmpty() || detalleOpt.get().getListaId() != listaId) {
             System.out.println("Ese detalle no pertenece a la lista.");
             return;
         }
+        DetalleLista detalle = detalleOpt.get();
 
         // Mostrar productos disponibles para elegir
         System.out.println("Productos disponibles:");
@@ -160,11 +163,12 @@ public class SesionUsuarioMenu {
         int nuevoProductoId = sc.nextInt();
         sc.nextLine();
 
-        Producto nuevoProducto = productoServicio.buscarPorId(nuevoProductoId);
-        if (nuevoProducto == null) {
+        Optional<Producto> nuevoProductoOpt = productoServicio.buscarPorId(nuevoProductoId);
+        if (nuevoProductoOpt.isEmpty()) {
             System.out.println("No existe producto con ese ID.");
             return;
         }
+        Producto nuevoProducto = nuevoProductoOpt.get();
 
         System.out.print("Nueva cantidad: ");
         int nuevaCantidad = sc.nextInt();

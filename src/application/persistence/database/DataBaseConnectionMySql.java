@@ -30,7 +30,7 @@ public class DataBaseConnectionMySql {
     private static DataBaseConnectionMySql instancia;
 
     // La conexión JDBC activa
-    private Connection conexion;
+    private final Connection conexion;
 
     // Constructor PRIVADO: nadie puede hacer "new DataBaseConnectionMySql()"
     private DataBaseConnectionMySql() throws SQLException {

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductoAdapterMySql implements ProductoRepositorioPort {
 
@@ -41,19 +42,19 @@ public class ProductoAdapterMySql implements ProductoRepositorioPort {
     }
 
     @Override
-    public Producto buscar(int id) {
+    public Optional<Producto> buscar(int id) {
         String sql = SELECT_BASE + "WHERE p.id_producto = ?";
         try (PreparedStatement ps = getConexion().prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapper.mapRow(rs);
+                    return Optional.of(mapper.mapRow(rs));
                 }
             }
         } catch (SQLException e) {
             System.out.println("Error al buscar producto: " + e.getMessage());
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
