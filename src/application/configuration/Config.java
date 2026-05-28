@@ -1,52 +1,46 @@
 package application.configuration;
 
+import application.persistence.repositorio.*;
 import application.service.*;
 import application.service.outputs.UsuarioServicio;
 import application.userinterface.MenuApp;
 import application.userinterface.SesionUsuarioMenu;
-import application.repositorio.*;
 import application.vista.*;
 
 public class Config {
 
     public static MenuApp createMenuApp() {
 
-        // --- Roles ---
-        RolRepositorio rolRepositorio = new RolRepositorio();
+        // --- Repositorios MySQL (adaptadores reales) ---
+        RolAdapterMySql rolRepositorio = new RolAdapterMySql();
+        CategoriaAdapterMySql categoriaRepositorio = new CategoriaAdapterMySql();
+        UsuarioAdapterMySql usuarioRepositorio = new UsuarioAdapterMySql();
+        ProductoAdapterMySql productoRepositorio = new ProductoAdapterMySql();
+        ListaCompraAdapterMySql listaCompraRepositorio = new ListaCompraAdapterMySql();
+        DetalleListaAdapterMySql detalleListaRepositorio = new DetalleListaAdapterMySql();
+
+        // --- Servicios ---
         RolServicioImpl rolServicioImpl = new RolServicioImpl(rolRepositorio);
-        RolVista rolVista = new RolVista(rolServicioImpl);
-
-        // --- Usuarios ---
-        UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorio();
-        UsuarioServicioImpl usuarioServicioImpl = new UsuarioServicioImpl(usuarioRepositorio);
-        UsuarioVista usuarioVista = new UsuarioVista(usuarioServicioImpl, rolServicioImpl);
-
-        // --- Categorias ---
-        CategoriaRepositorio categoriaRepositorio = new CategoriaRepositorio();
         CategoriaServicioImpl categoriaServicioImpl = new CategoriaServicioImpl(categoriaRepositorio);
-        CategoriaVista categoriaVista = new CategoriaVista(categoriaServicioImpl);
-
-        // --- Productos (necesita CategoriaServicio para la vista) ---
-        ProductoRepositorio productoRepositorio = new ProductoRepositorio();
+        UsuarioServicioImpl usuarioServicioImpl = new UsuarioServicioImpl(usuarioRepositorio);
         ProductoServicioImpl productoServicioImpl = new ProductoServicioImpl(productoRepositorio);
-        ProductoVista productoVista = new ProductoVista(productoServicioImpl, categoriaServicioImpl);
+        ListaCompraServicioImpl listaCompraServicioImpl = new ListaCompraServicioImpl(listaCompraRepositorio);
+        DetalleListaServicioImpl detalleListaServicioImpl = new DetalleListaServicioImpl(detalleListaRepositorio);
         DetalleListaProductoServicio detalleListaProductoServicio = new DetalleListaProductoServicio();
 
-        // --- Listas de compra (necesita UsuarioServicio para la vista) ---
-        ListaCompraRepositorio listaCompraRepositorio = new ListaCompraRepositorio();
-        ListaCompraServicioImpl listaCompraServicioImpl = new ListaCompraServicioImpl(listaCompraRepositorio);
+        // --- Vistas ---
+        RolVista rolVista = new RolVista(rolServicioImpl);
+        UsuarioVista usuarioVista = new UsuarioVista(usuarioServicioImpl, rolServicioImpl);
+        CategoriaVista categoriaVista = new CategoriaVista(categoriaServicioImpl);
+        ProductoVista productoVista = new ProductoVista(productoServicioImpl, categoriaServicioImpl);
         ListaCompraVista listaCompraVista = new ListaCompraVista(listaCompraServicioImpl, usuarioServicioImpl);
-
-        // --- Detalle lista (necesita ProductoServicio para la vista) ---
-        DetalleListaRepositorio detalleListaRepositorio = new DetalleListaRepositorio();
-        DetalleListaServicioImpl detalleListaServicioImpl = new DetalleListaServicioImpl(detalleListaRepositorio);
         DetalleListaVista detalleListaVista = new DetalleListaVista(
                 detalleListaServicioImpl,
                 detalleListaProductoServicio,
                 productoServicioImpl
         );
 
-        // --- Sesion de usuario (necesita ProductoServicio para buscar productos al editar) ---
+        // --- Sesion de usuario ---
         UsuarioServicio usuarioServicio = usuarioServicioImpl;
         SesionUsuarioMenu sesionUsuarioMenu = new SesionUsuarioMenu(
                 listaCompraServicioImpl,
