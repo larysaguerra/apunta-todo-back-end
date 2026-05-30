@@ -1,7 +1,7 @@
 package application.userinterface;
 
 import application.domain.Usuario;
-import application.service.outputs.UsuarioServicio;
+import application.service.inputs.UsuarioServicio;
 import application.vista.*;
 
 import java.util.Scanner;

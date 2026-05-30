@@ -3,8 +3,8 @@ package application.vista;
 import application.domain.CategoriaProducto;
 import application.domain.Producto;
 import application.domain.validaciones.ValidationRules;
-import application.service.outputs.CategoriaServicio;
-import application.service.outputs.ProductoServicio;
+import application.service.inputs.CategoriaServicio;
+import application.service.inputs.ProductoServicio;
 
 import java.util.Optional;
 import java.util.Scanner;

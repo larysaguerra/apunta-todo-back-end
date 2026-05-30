@@ -3,8 +3,8 @@ package application.vista;
 import application.domain.Rol;
 import application.domain.Usuario;
 import application.domain.validaciones.ValidationRules;
-import application.service.outputs.RolServicio;
-import application.service.outputs.UsuarioServicio;
+import application.service.inputs.RolServicio;
+import application.service.inputs.UsuarioServicio;
 
 import java.util.Optional;
 import java.util.Scanner;

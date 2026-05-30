@@ -4,8 +4,8 @@ import application.domain.ListaCompra;
 import application.domain.Usuario;
 import application.domain.enums.EstadoLista;
 import application.domain.validaciones.ValidationRules;
-import application.service.outputs.ListaCompraServicio;
-import application.service.outputs.UsuarioServicio;
+import application.service.inputs.ListaCompraServicio;
+import application.service.inputs.UsuarioServicio;
 
 import java.util.Optional;
 import java.util.Scanner;

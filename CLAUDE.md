@@ -56,8 +56,8 @@ src/
     │   ├── mapper/        — RowMapper<T> interface + implementaciones
     │   └── repositorio/   — adaptadores MySQL (*AdapterMySql)
     ├── service/           — lógica de negocio
-    │   ├── outputs/       — interfaces de servicio (puertos de entrada)
-    │   └── ports/         — interfaces de repositorio (puertos de salida)
+    │   ├── inputs/        — interfaces de servicio (puertos de entrada)
+    │   └── outputs/       — interfaces de repositorio (puertos de salida)
     ├── userinterface/     — MenuApp, SesionUsuarioMenu
     ├── vista/             — vistas por entidad
     └── util/              — FormValidationUtil, FormRuleValidator
@@ -84,8 +84,8 @@ Cada ítem debe estar implementado y demostrable en el código.
 
 ### 3. Arquitectura por capas — Puertos y Adaptadores (Hexagonal)
 - [ ] `domain/` — solo entidades, enums y reglas de validación, sin dependencias externas
-- [ ] `service/outputs/` — interfaces de servicio (puertos de entrada)
-- [ ] `service/ports/` — interfaces de repositorio (puertos de salida)
+- [ ] `service/inputs/` — interfaces de servicio (puertos de entrada)
+- [ ] `service/outputs/` — interfaces de repositorio (puertos de salida)
 - [ ] `persistence/repositorio/` — adaptadores MySQL que implementan los ports
 - [ ] `vista/` y `userinterface/` — capa de presentación que solo llama a servicios
 - [ ] Ninguna vista llama directamente a un repositorio

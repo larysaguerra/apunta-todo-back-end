@@ -1,8 +1,8 @@
 package application.service;
 
 import application.domain.CategoriaProducto;
-import application.service.outputs.CategoriaServicio;
-import application.service.ports.CategoriaRepositorioPort;
+import application.service.inputs.CategoriaServicio;
+import application.service.outputs.CategoriaRepositorioPort;
 
 import java.util.List;
 import java.util.Optional;

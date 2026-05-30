@@ -3,7 +3,7 @@ package application.persistence.repositorio;
 import application.domain.Rol;
 import application.persistence.database.DataBaseConnectionMySql;
 import application.persistence.mapper.RolRowMapper;
-import application.service.ports.RolRepositorioPort;
+import application.service.outputs.RolRepositorioPort;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

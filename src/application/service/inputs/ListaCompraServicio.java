@@ -1,4 +1,4 @@
-package application.service.outputs;
+package application.service.inputs;
 
 import application.domain.ListaCompra;
 import java.util.List;

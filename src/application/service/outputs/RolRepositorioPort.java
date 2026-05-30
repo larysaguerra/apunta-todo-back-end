@@ -1,4 +1,4 @@
-package application.service.ports;
+package application.service.outputs;
 
 import application.domain.Rol;
 import java.util.List;

@@ -84,8 +84,8 @@ src/
     │   ├── mapper/          Interfaz RowMapper<T> + 6 implementaciones
     │   └── repositorio/     6 AdapterMySql — acceso real a MySQL
     ├── service/
-    │   ├── outputs/         Interfaces de servicio (puertos de entrada)
-    │   ├── ports/           Interfaces de repositorio (puertos de salida)
+    │   ├── inputs/          Interfaces de servicio (puertos de entrada)
+    │   ├── outputs/         Interfaces de repositorio (puertos de salida)
     │   └── *ServicioImpl    Lógica de negocio
     ├── userinterface/       MenuApp, SesionUsuarioMenu
     ├── util/                FormValidationUtil
@@ -131,11 +131,11 @@ Los servicios trabajan con las interfaces de repositorio (`RolRepositorioPort`, 
 El dominio del negocio no sabe nada de MySQL, ni de la consola. Las capas se comunican solo a través de interfaces:
 
 ```
-Vista  →  [outputs/]ServicioInterface  →  ServicioImpl  →  [ports/]RepositorioPort  →  AdapterMySql  →  MySQL
+Vista  →  [inputs/]ServicioInterface  →  ServicioImpl  →  [outputs/]RepositorioPort  →  AdapterMySql  →  MySQL
 ```
 
-- `service/outputs/` — interfaces que definen qué puede pedirle la vista al servicio
-- `service/ports/` — interfaces que definen qué le pide el servicio al repositorio
+- `service/inputs/` — interfaces que definen qué puede pedirle la vista al servicio (puertos de entrada)
+- `service/outputs/` — interfaces que definen qué le pide el servicio al repositorio (puertos de salida)
 - `persistence/repositorio/` — implementaciones concretas para MySQL
 - Ninguna vista llama directamente a un repositorio
 
@@ -339,9 +339,9 @@ El diagrama incluye los 8 paquetes del proyecto con sus clases, interfaces, rela
 | Paquete (color) | Contenido |
 |---|---|
 | `domain` (verde) | Entidades, enum `EstadoLista`, `ValidationRules` |
-| `service.outputs` (azul) | Interfaces de servicio — contratos de entrada |
+| `service.inputs` (azul) | Interfaces de servicio — contratos de entrada |
 | `service.impl` (azul claro) | Implementaciones de lógica de negocio |
-| `service.ports` (violeta) | Interfaces de repositorio — contratos de salida |
+| `service.outputs` (violeta) | Interfaces de repositorio — contratos de salida |
 | `persistence.mapper` (naranja) | `RowMapper<T>` y 6 implementaciones |
 | `persistence.repositorio` (rojo) | 6 `*AdapterMySql` |
 | `persistence.database` (lila) | `DataBaseConnectionMySql` Singleton |

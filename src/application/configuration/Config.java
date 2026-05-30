@@ -2,7 +2,7 @@ package application.configuration;
 
 import application.persistence.repositorio.*;
 import application.service.*;
-import application.service.outputs.UsuarioServicio;
+import application.service.inputs.UsuarioServicio;
 import application.userinterface.MenuApp;
 import application.userinterface.SesionUsuarioMenu;
 import application.vista.*;

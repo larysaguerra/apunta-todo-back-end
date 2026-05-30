@@ -1,7 +1,7 @@
 package application.service;
 
-import application.service.outputs.UsuarioServicio;
-import application.service.ports.UsuarioRepositorioPort;
+import application.service.inputs.UsuarioServicio;
+import application.service.outputs.UsuarioRepositorioPort;
 import application.domain.Usuario;
 
 import java.util.List;
