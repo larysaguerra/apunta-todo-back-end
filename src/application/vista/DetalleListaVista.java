@@ -4,8 +4,8 @@ import application.domain.DetalleLista;
 import application.domain.Producto;
 import application.domain.validaciones.ValidationRules;
 import application.service.DetalleListaProductoServicio;
-import application.service.outputs.ProductoServicio;
-import application.service.outputs.DesalleListaServicio;
+import application.service.inputs.ProductoServicio;
+import application.service.inputs.DesalleListaServicio;
 
 import java.util.Optional;
 import java.util.Scanner;

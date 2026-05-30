@@ -120,9 +120,9 @@ package "domain" #E8F4E8 {
 }
 
 ' ─────────────────────────────────────────
-' SERVICE — PUERTOS DE ENTRADA (outputs)
+' SERVICE — PUERTOS DE ENTRADA (inputs)
 ' ─────────────────────────────────────────
-package "service.outputs" #E8EEF8 {
+package "service.inputs" #E8EEF8 {
   interface RolServicio {
     + crear(Rol) : void
     + buscarPorId(int) : Optional<Rol>
@@ -207,9 +207,9 @@ package "service.impl" #EEF0F8 {
 }
 
 ' ─────────────────────────────────────────
-' SERVICE — PUERTOS DE SALIDA (ports)
+' SERVICE — PUERTOS DE SALIDA (outputs)
 ' ─────────────────────────────────────────
-package "service.ports" #F0ECF8 {
+package "service.outputs" #F0ECF8 {
   interface RolRepositorioPort {
     + guardar(Rol) : void
     + buscarPorId(int) : Optional<Rol>

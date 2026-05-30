@@ -2,7 +2,7 @@ package application.vista;
 
 import application.domain.CategoriaProducto;
 import application.domain.validaciones.ValidationRules;
-import application.service.outputs.CategoriaServicio;
+import application.service.inputs.CategoriaServicio;
 
 import java.util.Scanner;
 

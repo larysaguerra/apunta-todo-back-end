@@ -1,7 +1,7 @@
 package application.service;
 
-import application.service.outputs.DesalleListaServicio;
-import application.service.ports.DetalleListaRepositorioPort;
+import application.service.inputs.DesalleListaServicio;
+import application.service.outputs.DetalleListaRepositorioPort;
 import application.domain.DetalleLista;
 
 import java.util.List;

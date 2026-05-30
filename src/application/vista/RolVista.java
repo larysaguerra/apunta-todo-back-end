@@ -1,7 +1,7 @@
 package application.vista;
 
 import application.domain.Rol;
-import application.service.outputs.RolServicio;
+import application.service.inputs.RolServicio;
 
 import java.util.Scanner;
 

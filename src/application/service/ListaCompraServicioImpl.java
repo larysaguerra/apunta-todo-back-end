@@ -1,7 +1,7 @@
 package application.service;
 
-import application.service.outputs.ListaCompraServicio;
-import application.service.ports.ListaCompraRepositorioPort;
+import application.service.inputs.ListaCompraServicio;
+import application.service.outputs.ListaCompraRepositorioPort;
 import application.domain.ListaCompra;
 
 import java.util.Comparator;

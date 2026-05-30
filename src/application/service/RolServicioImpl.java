@@ -1,8 +1,8 @@
 package application.service;
 
 import application.domain.Rol;
-import application.service.outputs.RolServicio;
-import application.service.ports.RolRepositorioPort;
+import application.service.inputs.RolServicio;
+import application.service.outputs.RolRepositorioPort;
 
 import java.util.List;
 import java.util.Optional;

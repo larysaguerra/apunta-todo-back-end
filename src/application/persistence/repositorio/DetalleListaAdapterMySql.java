@@ -3,7 +3,7 @@ package application.persistence.repositorio;
 import application.domain.DetalleLista;
 import application.persistence.database.DataBaseConnectionMySql;
 import application.persistence.mapper.DetalleListaRowMapper;
-import application.service.ports.DetalleListaRepositorioPort;
+import application.service.outputs.DetalleListaRepositorioPort;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
