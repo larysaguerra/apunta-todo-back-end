@@ -46,7 +46,8 @@ public class Config {
                 listaCompraServicioImpl,
                 detalleListaServicioImpl,
                 detalleListaProductoServicio,
-                productoServicioImpl
+                productoServicioImpl,
+                categoriaServicioImpl
         );
 
         return new MenuApp(
